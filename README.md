@@ -31,6 +31,8 @@ Dataset Source: Lending Club Loan Data (2007–2018Q4). Available on Kaggle: htt
 
 **1. Grade Is the Strongest Single Predictor of Default**
 
+![Default Rate by Grade](https://github.com/aanalyst/Credit-Risk-Scorecard/raw/main/Default%20Rate%20by%20Grade.png)
+
 The default rate by grade chart shows a near-perfect staircase from A (6%) to G (50%). No other variable in the dataset produces this level of separation between low and high risk borrowers. Grade is Lending Club's own internal risk assessment — and the data confirms it is doing its job accurately.
 
 The implication for modelling: grade will be the dominant feature in any credit risk model trained on this dataset. However, grade and interest rate are highly correlated (lower grade = higher rate), meaning both variables are partially measuring the same underlying risk signal. This multicollinearity is noted as a known limitation.
