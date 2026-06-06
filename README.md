@@ -25,20 +25,32 @@ Dataset Source: Lending Club Loan Data (2007–2018Q4). Available on Kaggle: htt
 
 ---
 
----
+# Executive Summary
 
-# North Star Metrics
+## EDA — What the Data Reveals Before the Model
 
-| Metric | Value | Significance |
-|---|---|---|
-| **Loans Analysed** | 1,345,310 | Filtered from 2.26M to Fully Paid and Charged Off only |
-| **Default Rate (Overall)** | 20% | 80/20 class split requiring balanced model design |
-| **Grade A Default Rate** | 6% | Lowest risk band — near-prime borrowers |
-| **Grade G Default Rate** | 50% | Highest risk band — one in two loans defaults |
-| **ROC-AUC** | 0.71 | Solid performance on real-world noisy data |
-| **Recall (Defaulters)** | 67% | Model catches two-thirds of actual defaults |
-| **False Negatives in Low/Medium Band** | 16,560 | Missed defaulters hiding in apparently safe risk bands |
-| **Scorecard Range** | 572–589 | Points scale anchored at 600 = 50:1 odds (PDO = 20) |
-| **Very High Risk Default Rate** | 55% | vs 4% for Very Low — 13x separation across risk bands |
+**1. Grade Is the Strongest Single Predictor of Default**
+
+The default rate by grade chart shows a near-perfect staircase from A (6%) to G (50%). No other variable in the dataset produces this level of separation between low and high risk borrowers. Grade is Lending Club's own internal risk assessment — and the data confirms it is doing its job accurately.
+
+The implication for modelling: grade will be the dominant feature in any credit risk model trained on this dataset. However, grade and interest rate are highly correlated (lower grade = higher rate), meaning both variables are partially measuring the same underlying risk signal. This multicollinearity is noted as a known limitation.
+
+**2. DTI Shows a Clear But Weaker Risk Gradient**
+
+Borrowers with a debt-to-income ratio above 40 default at 31% — more than double the rate of borrowers with DTI below 10 (15%). The relationship is consistent and monotonic, confirming DTI as a meaningful predictor.
+
+The separation is weaker than grade (31% vs 15% compared to 50% vs 6%), which tells us DTI alone is insufficient for credit decisioning — it adds signal but should not be used in isolation.
+
+**3. FICO Score Predicts Default in the Opposite Direction**
+
+As expected, higher FICO scores correspond to lower default rates. Borrowers in the 780–850 band default at 7%; those in the 660–700 band default at 23%. The inverse relationship confirms FICO is functioning as intended as an independent creditworthiness measure.
+
+A key observation: the lowest FICO bucket (580–620) is empty in this dataset. Lending Club applied a minimum credit score threshold at the application stage — meaning the dataset exhibits survivorship bias. The model was trained only on approved loans, not the full applicant population. This likely causes the model to underestimate risk for borderline borrowers who would have been rejected in practice.
+
+**4. Loan Purpose Reveals Structural Risk Differences**
+
+Small business loans default at 30% — the highest of any purpose category. Wedding loans default at 12% — the lowest. The gap reflects structural differences in risk: small business borrowers face factors entirely outside their control (market conditions, competition, economic downturns) and typically borrow larger amounts. Wedding borrowers have a fixed, one-time expense with predictable repayment behaviour.
+
+This insight supports purpose as a meaningful feature and provides a rationale for risk-based pricing differentiation by loan type.
 
 ---
