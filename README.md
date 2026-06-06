@@ -35,6 +35,8 @@ The default rate by grade chart shows a near-perfect staircase from A (6%) to G 
 
 The implication for modelling: grade will be the dominant feature in any credit risk model trained on this dataset. However, grade and interest rate are highly correlated (lower grade = higher rate), meaning both variables are partially measuring the same underlying risk signal. This multicollinearity is noted as a known limitation.
 
+
+
 **2. DTI Shows a Clear But Weaker Risk Gradient**
 
 Borrowers with a debt-to-income ratio above 40 default at 31% — more than double the rate of borrowers with DTI below 10 (15%). The relationship is consistent and monotonic, confirming DTI as a meaningful predictor.
