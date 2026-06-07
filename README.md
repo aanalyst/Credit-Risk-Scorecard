@@ -126,3 +126,24 @@ Very High risk band has 54% default rate which is the highest as expected. Very 
 | Very High | 0 |
 
 The High and Very High bands have zero false negatives — the model correctly flags almost all borrowers in these bands as risky. The danger zone is Low and Medium, where 16,560 actual defaulters were classified as safe. These are the borrowers who cost lenders the most money precisely because they look like normal, creditworthy customers.
+
+## Credit Scorecard
+
+The model's default probabilities were converted to a points-based scorecard using the industry-standard PDO (Points to Double the Odds) methodology:
+
+- **Anchor point:** Score of 600 = 50:1 odds (strong borrower)
+- **PDO:** 20 points = odds double
+- **Score range:** 300–850 (clipped to match FICO conventions)
+
+| Risk Band | Average Score |
+|---|---|
+| Very Low | 589 |
+| Low | 584 |
+| Medium | 580 |
+| High | 576 |
+| Very High | 572 |
+
+The scorecard produces the expected directional result — lower risk borrowers receive higher scores. The narrow overall range (572–589) reflects logistic regression's tendency to produce conservative, centralised probability estimates on noisy real-world data. In a production scorecard, additional feature engineering and model tuning would widen the distribution.
+
+---
+
