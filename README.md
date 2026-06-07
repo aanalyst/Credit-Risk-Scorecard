@@ -98,7 +98,13 @@ Three queries were run against a SQLite database of model predictions to support
 
 **Query 2 — Average Default Probability by Risk Band**
 
-Confirms the risk bands are internally consistent — average probability ranges from 16% (Very Low) to 83% (Very High).
+| Risk Band | Avg Default Probability |
+|---|---|
+| Very Low | 0.1576 |
+| Low | 0.3095 |
+| Medium | 0.4989 |
+| High | 0.6821 |
+| Very High | 0.8318 |
 
 **Query 3 — False Negatives by Risk Band**
 
