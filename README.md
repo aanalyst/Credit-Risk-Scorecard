@@ -27,7 +27,7 @@ Dataset Source: Lending Club Loan Data (2007–2018Q4). Available on Kaggle: htt
 
 # Executive Summary
 
-## EDA — What the Data Reveals Before the Model
+## Exploratory Data Analysis
 
 **1. Grade Is the Strongest Single Predictor of Default**
 
