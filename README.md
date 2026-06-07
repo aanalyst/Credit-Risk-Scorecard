@@ -147,3 +147,15 @@ The scorecard produces the expected directional result — lower risk borrowers 
 
 ---
 
+# Insights Deep-Dive
+
+## The False Negative Problem
+
+The most operationally significant finding in this project is not the model's overall performance — it is where the model fails.
+
+False negatives (actual defaulters classified as safe) are concentrated entirely in the Low and Medium risk bands. These are borrowers with default probabilities between 20% and 60% — not extreme enough to trigger a rejection, but high enough to represent meaningful credit risk.
+
+From a bank's perspective, this is the most dangerous failure mode. A borrower flagged as High or Very High risk can be rejected or priced accordingly. A borrower who slips through in the Low band — approved at standard rates — represents an unpriced loss.
+
+This finding has a direct operational implication: **risk-based pricing should not be reserved for High and Very High bands only**. The Low and Medium bands contain meaningful default risk that warrants higher interest rates, lower credit limits, or enhanced monitoring.
+
