@@ -45,7 +45,7 @@ The implication for modelling: grade will be the dominant feature in any credit 
 
 Borrowers with a debt-to-income ratio above 40 default at 31% more than double the rate of borrowers with DTI below 10 (15%). The relationship is consistent and monotonic, confirming DTI as a meaningful predictor.
 
-The separation is weaker than grade (31% vs 15% compared to 50% vs 6%), which tells us DTI alone is insufficient for credit decisioning. Tt adds signal but should not be used in isolation.
+The separation is weaker than grade (31% vs 15% compared to 50% vs 6%), which tells us DTI alone is insufficient for credit decisioning. It adds signal but should not be used in isolation.
 
 **3. FICO Score Predicts Default in the Opposite Direction**
 
