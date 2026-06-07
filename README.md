@@ -3,7 +3,7 @@
 | |
 |---|
 | **Background** |
-| Australian banks and lenders are required to assess borrower creditworthiness before approving loans. Without a structured, data-driven approach, lenders expose themselves to significant credit losses — particularly from borrowers who appear low-risk but default unexpectedly. This project builds an end-to-end credit risk scorecard using **1,345,310 real loan records** from Lending Club (2007–2018), one of the largest peer-to-peer lending platforms. The dataset mirrors real-world lending patterns including borrower grades, income levels, debt obligations, and repayment outcomes. Reporting as a data analyst embedded in a credit risk function, an end-to-end analysis was conducted to identify default drivers, score borrower risk using logistic regression, and produce a points-based credit scorecard.
+| Australian banks and lenders are required to assess borrower creditworthiness before approving loans. Without a structured, data-driven approach, lenders expose themselves to significant credit losses; particularly from borrowers who appear low-risk but default unexpectedly. This project builds an end-to-end credit risk scorecard using **1,345,310 real loan records** from Lending Club (2007–2018), one of the largest peer-to-peer lending platforms. The dataset mirrors real-world lending patterns including borrower grades, income levels, debt obligations, and repayment outcomes. Reporting as a data analyst embedded in a credit risk function, an end-to-end analysis was conducted to identify default drivers, score borrower risk using logistic regression, and produce a points-based credit scorecard.
 
 Dataset Source: Lending Club Loan Data (2007–2018Q4). Available on Kaggle: https://www.kaggle.com/datasets/wordsforthewise/lending-club
 
@@ -33,7 +33,7 @@ Dataset Source: Lending Club Loan Data (2007–2018Q4). Available on Kaggle: htt
 
 ![Default Rate by Grade](https://github.com/aanalyst/Credit-Risk-Scorecard/raw/main/Default%20Rate%20by%20Grade.png)
 
-The default rate by grade chart shows a near-perfect staircase from A (6%) to G (50%). No other variable in the dataset produces this level of separation between low and high risk borrowers. Grade is Lending Club's own internal risk assessment — and the data confirms it is doing its job accurately.
+The default rate by grade chart shows a near-perfect staircase from A (6%) to G (50%). No other variable in the dataset produces this level of separation between low and high risk borrowers. Grade is Lending Club's own internal risk assessment and the data confirms it is doing its job accurately.
 
 The implication for modelling: grade will be the dominant feature in any credit risk model trained on this dataset. However, grade and interest rate are highly correlated (lower grade = higher rate), meaning both variables are partially measuring the same underlying risk signal. This multicollinearity is noted as a known limitation.
 
@@ -43,9 +43,9 @@ The implication for modelling: grade will be the dominant feature in any credit 
 
 ![Default Rate by DTI](https://github.com/aanalyst/Credit-Risk-Scorecard/raw/main/Default%20Rate%20by%20DTI.png)
 
-Borrowers with a debt-to-income ratio above 40 default at 31% — more than double the rate of borrowers with DTI below 10 (15%). The relationship is consistent and monotonic, confirming DTI as a meaningful predictor.
+Borrowers with a debt-to-income ratio above 40 default at 31% more than double the rate of borrowers with DTI below 10 (15%). The relationship is consistent and monotonic, confirming DTI as a meaningful predictor.
 
-The separation is weaker than grade (31% vs 15% compared to 50% vs 6%), which tells us DTI alone is insufficient for credit decisioning — it adds signal but should not be used in isolation.
+The separation is weaker than grade (31% vs 15% compared to 50% vs 6%), which tells us DTI alone is insufficient for credit decisioning. Tt adds signal but should not be used in isolation.
 
 **3. FICO Score Predicts Default in the Opposite Direction**
 
@@ -62,5 +62,28 @@ A key observation: the lowest FICO bucket (580–620) is empty in this dataset. 
 Small business loans default at 30% — the highest of any purpose category. Wedding loans default at 12% — the lowest. The gap reflects structural differences in risk: small business borrowers face factors entirely outside their control (market conditions, competition, economic downturns) and typically borrow larger amounts. Wedding borrowers have a fixed, one-time expense with predictable repayment behaviour.
 
 This insight supports purpose as a meaningful feature and provides a rationale for risk-based pricing differentiation by loan type.
+
+---
+
+## Model Performance
+
+**Logistic Regression with Class Balancing and Feature Scaling**
+
+| Metric | Value |
+|---|---|
+| ROC-AUC | 0.71 |
+| Recall — Defaulters (Class 1) | 0.67 |
+| Precision — Defaulters (Class 1) | 0.31 |
+| Overall Accuracy | 0.64 |
+
+Two design decisions materially improved model performance:
+
+`class_weight='balanced'` — The dataset has an 80/20 class split. Without balancing, the model would achieve high accuracy by predicting "no default" for almost every loan. Balanced weighting forces the model to treat missed defaults as costly errors.
+
+`StandardScaler` — Features like `loan_amnt` (range: hundreds to $40,000) and `emp_length` (range: 0–11) operate on completely different scales. Without scaling, the model assigns disproportionate weight to larger-magnitude features. Scaling lifted recall from 0.60 to 0.67 and ROC-AUC from 0.70 to 0.71.
+
+**Why ROC-AUC of 0.71 Is Appropriate for This Dataset**
+
+The AML/CTF project in this portfolio achieved ROC-AUC of 0.9985 — but that dataset was synthetic, with laundering signals deliberately engineered into the data. Real-world credit data is inherently noisier. A 0.71 ROC-AUC on 1.3 million real Lending Club records is consistent with published benchmarks for logistic regression on this dataset (typical range: 0.68–0.72).
 
 ---
