@@ -84,6 +84,6 @@ Two design decisions materially improved model performance:
 
 **Why ROC-AUC of 0.71 Is Appropriate for This Dataset**
 
-The AML/CTF project in this portfolio achieved ROC-AUC of 0.9985 — but that dataset was synthetic, with laundering signals deliberately engineered into the data. Real-world credit data is inherently noisier. A 0.71 ROC-AUC on 1.3 million real Lending Club records is consistent with published benchmarks for logistic regression on this dataset (typical range: 0.68–0.72).
+Real-world credit data is inherently noisier. A 0.71 ROC-AUC on 1.3 million real Lending Club records is consistent with published benchmarks for logistic regression on this dataset (typical range: 0.68–0.72).
 
 ---
