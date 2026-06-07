@@ -151,11 +151,47 @@ The scorecard produces the expected directional result — lower risk borrowers 
 
 ## The False Negative Problem
 
-The most operationally significant finding in this project is not the model's overall performance — it is where the model fails.
+The most operationally significant finding in this project is not the model's overall performance but where the model fails.
 
 False negatives (actual defaulters classified as safe) are concentrated entirely in the Low and Medium risk bands. These are borrowers with default probabilities between 20% and 60% — not extreme enough to trigger a rejection, but high enough to represent meaningful credit risk.
 
-From a bank's perspective, this is the most dangerous failure mode. A borrower flagged as High or Very High risk can be rejected or priced accordingly. A borrower who slips through in the Low band — approved at standard rates — represents an unpriced loss.
+From a bank's perspective, this is the most dangerous failure mode. A borrower flagged as High or Very High risk can be rejected or priced accordingly. A borrower who slips through in the Low band approved at standard rates represents an unpriced loss.
 
 This finding has a direct operational implication: **risk-based pricing should not be reserved for High and Very High bands only**. The Low and Medium bands contain meaningful default risk that warrants higher interest rates, lower credit limits, or enhanced monitoring.
+
+## Why Logistic Regression Was the Right Starting Model
+
+Logistic regression is the industry standard for credit scorecard development — not because it is the most accurate algorithm available, but because it is interpretable. Every coefficient can be translated directly into a points contribution, every decision can be explained to a regulator or a borrower.
+
+In a regulatory environment where lenders must justify credit decisions (Australian credit law, responsible lending obligations), a model that cannot explain its outputs is not deployable regardless of its AUC score.
+
+---
+
+# Recommendations
+
+## Credit Decisioning
+
+- **Implement risk-based pricing across all five bands, not just High and Very High.** The false negative analysis shows significant default risk in the Low and Medium bands. A single standard rate for these borrowers underprices the risk the lender is absorbing.
+- **Apply enhanced due diligence to small business loan applications by default.** A 30% default rate — 1.5x the overall average — warrants mandatory income verification, business plan review, and lower initial credit limits for this purpose category.
+- **Set a minimum FICO threshold review process.** The dataset's empty lowest FICO bucket suggests Lending Club's rejection policy was effective. Any softening of minimum score requirements should be accompanied by compensating controls (lower loan amounts, shorter terms, higher rates).
+
+## Model Improvement
+
+- **Add gradient boosting (XGBoost or LightGBM) as a comparison model.** Logistic regression is the correct starting point for a scorecard, but tree-based models typically achieve 0.75–0.78 ROC-AUC on this dataset. The comparison would quantify the accuracy cost of interpretability.
+- **Engineer interaction features.** Grade × DTI and FICO × loan_amnt may capture non-linear risk relationships that logistic regression cannot model directly.
+- **Address the survivorship bias.** If application-level data is available (including rejected applicants), retraining on the full population would produce a less biased model for borderline borrowers.
+
+---
+
+# Tech Stack
+
+| Tool | Purpose |
+|---|---|
+| Python | Data processing, modelling, scorecard |
+| pandas | Data wrangling (1.3M rows) |
+| scikit-learn | Logistic regression, train/test split, StandardScaler |
+| matplotlib | EDA visualisations |
+| SQLite | Risk band storage and querying |
+| Jupyter Notebook | End-to-end development environment |
+
 
