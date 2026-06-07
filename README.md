@@ -41,17 +41,23 @@ The implication for modelling: grade will be the dominant feature in any credit 
 
 **2. DTI Shows a Clear But Weaker Risk Gradient**
 
+![Default Rate by DTI](https://github.com/aanalyst/Credit-Risk-Scorecard/raw/main/Default%20Rate%20by%20DTI.png)
+
 Borrowers with a debt-to-income ratio above 40 default at 31% — more than double the rate of borrowers with DTI below 10 (15%). The relationship is consistent and monotonic, confirming DTI as a meaningful predictor.
 
 The separation is weaker than grade (31% vs 15% compared to 50% vs 6%), which tells us DTI alone is insufficient for credit decisioning — it adds signal but should not be used in isolation.
 
 **3. FICO Score Predicts Default in the Opposite Direction**
 
+![Default Rate by FICO Score](https://github.com/aanalyst/Credit-Risk-Scorecard/raw/main/Default%20Rate%20by%20FICO%20Score.png)
+
 As expected, higher FICO scores correspond to lower default rates. Borrowers in the 780–850 band default at 7%; those in the 660–700 band default at 23%. The inverse relationship confirms FICO is functioning as intended as an independent creditworthiness measure.
 
 A key observation: the lowest FICO bucket (580–620) is empty in this dataset. Lending Club applied a minimum credit score threshold at the application stage — meaning the dataset exhibits survivorship bias. The model was trained only on approved loans, not the full applicant population. This likely causes the model to underestimate risk for borderline borrowers who would have been rejected in practice.
 
 **4. Loan Purpose Reveals Structural Risk Differences**
+
+![Default Rate by Purpose](https://github.com/aanalyst/Credit-Risk-Scorecard/raw/main/Default%20Rate%20by%20Purpose.png)
 
 Small business loans default at 30% — the highest of any purpose category. Wedding loans default at 12% — the lowest. The gap reflects structural differences in risk: small business borrowers face factors entirely outside their control (market conditions, competition, economic downturns) and typically borrow larger amounts. Wedding borrowers have a fixed, one-time expense with predictable repayment behaviour.
 
