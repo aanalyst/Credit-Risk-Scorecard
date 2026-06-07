@@ -82,6 +82,37 @@ Two design decisions materially improved model performance:
 
 `StandardScaler` — Features like `loan_amnt` (range: hundreds to $40,000) and `emp_length` (range: 0–11) operate on completely different scales. Without scaling, the model assigns disproportionate weight to larger-magnitude features. Scaling lifted recall from 0.60 to 0.67 and ROC-AUC from 0.70 to 0.71.
 
+## SQL Risk Analysis
+
+Three queries were run against a SQLite database of model predictions to support credit decisioning:
+
+**Query 1 — Default Rate by Risk Band**
+
+| Risk Band | Default Rate |
+|---|---|
+| Very Low | 4.1% |
+| Low | 10.1% |
+| Medium | 20.1% |
+| High | 35.4% |
+| Very High | 54.9% |
+
+**Query 2 — Average Default Probability by Risk Band**
+
+Confirms the risk bands are internally consistent — average probability ranges from 16% (Very Low) to 83% (Very High).
+
+**Query 3 — False Negatives by Risk Band**
+
+| Risk Band | Missed Defaulters |
+|---|---|
+| Very Low | 1,032 |
+| Low | 7,855 |
+| Medium | 8,705 |
+| High | 0 |
+| Very High | 0 |
+
+The High and Very High bands have zero false negatives — the model correctly flags almost all borrowers in these bands as risky. The danger zone is Low and Medium, where 16,560 actual defaulters were classified as safe. These are the borrowers who cost lenders the most money precisely because they look like normal, creditworthy customers.
+
+
 **Why ROC-AUC of 0.71 Is Appropriate for This Dataset**
 
 Real-world credit data is inherently noisier. A 0.71 ROC-AUC on 1.3 million real Lending Club records is consistent with published benchmarks for logistic regression on this dataset (typical range: 0.68–0.72).
